@@ -26,8 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install shfmt
+        run: |
+          go install mvdan.cc/sh/v3/cmd/shfmt@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
       - name: Run shfmt
-        run: docker run --rm -v "$PWD":/src -w /src mvdan/shfmt:latest -d *.sh
+        run: shfmt -d *.sh
 
   markdownlint:
     name: Markdown Lint
